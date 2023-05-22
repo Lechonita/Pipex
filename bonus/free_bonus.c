@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 14:37:53 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/17 13:13:19 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/22 17:51:24 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,11 +101,55 @@
 // 	return ;
 // }
 
+/* Free data->pipe (int **) */
+
+void	ft_free_pipes(t_pipex *data)
+{
+	int	i;
+
+	// printf("Je passe par la\n");
+	if (!data->pipe)
+		return ;
+	i = -1;
+	while (data->pipe[++i])
+		free(data->pipe[i]);
+	free(data->pipe);
+}
+
+/* Free data->split_path (char **) */
+
+void	ft_free_split_path(t_pipex *data)
+{
+	int	i;
+
+	if (!data->split_path)
+		return ;
+	i = -1;
+	while (data->split_path[++i])
+		free(data->split_path[i]);
+	free(data->split_path);
+}
+
+/* Write error message, free, exit */
+
+void	error_free_exit(t_pipex *data, char *argv, char *error_message)
+{
+	if (argv != 0)
+	{
+		ft_putstr_fd(argv, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	ft_putstr_fd(error_message, 2);
+	ft_putchar_fd('\n', 2);
+	ft_free_split_path(data);
+	ft_free_pipes(data);
+	exit (errno);
+}
+
 /* Write error message */
 
-void	error_message(char *str)
+void	fd_error(char *str)
 {
-	// ft_printf("%s: %s\n", strerror(errno), str);
 	ft_putstr_fd("pipex: ", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd(": ", 2);

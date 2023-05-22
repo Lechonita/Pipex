@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 12:08:17 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/17 13:25:29 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/22 18:15:42 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@
 // 		// close(data->infile);
 // 		// data->infile = open("here_doc", O_RDONLY);
 // 		// if (data->infile < 0)
-// 			// error_message("infile");
+// 			// fd_error("infile");
 // 		data->outfile = open(argv[argc - 1], O_APPEND | O_CREAT | O_RDWR, 0777);
 // 		if (data->outfile < 0)
-// 			error_message(argv[argc - 1]);
+// 			fd_error(argv[argc - 1]);
 // 	}
 // }
 
@@ -45,7 +45,7 @@
 // {
 // 	data->infile = open("here_doc", O_TRUNC | O_CREAT | O_WRONLY, 0644);
 // 	if (data->infile < 0)
-// 		error_message("here_doc");
+// 		fd_error("here_doc");
 // 	data->nb_cmd = argc - 4;
 // 	data->path = get_path(env);
 // 	if (!data->path)
@@ -76,17 +76,21 @@ void	init_struct(t_pipex *data, int argc, char **argv, char **env)
 		data->split_path = ft_split(data->path, ':');
 		{
 			if (!data->split_path)
-				printf("allocation failed\n");
+				error_free_exit(data, 0, "Allocation failed: data->split_path\n");
 		}
 	}
 	data->pipe = malloc(sizeof(int *) * (argc - 4 - data->hd_status));
+	// data->pipe = NULL; // TESTING HERE
 	if (!data->pipe)
-		;
+		error_free_exit(data, 0, "Allocation failed: data->pipe");
 	i = 0;
+	// printf("je passe par ici, avant de piper mes pipes\n");
 	while (i < argc - 4 - data->hd_status)
 	{
 		data->pipe[i] = malloc(sizeof(int) * 2);
 		pipe(data->pipe[i]);
+		// printf("ici le data->pipe[%d][0] = %d\n", i, data->pipe[i][0]);
+		// printf("et  le data->pipe[%d][1] = %d\n", i, data->pipe[i][1]);
 		i++;
 	}
 }

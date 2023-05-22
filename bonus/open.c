@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 12:46:15 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/17 13:44:47 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/22 15:03:50 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	ft_open_infile(char **argv)
 
 	fd = open(argv[1], O_RDONLY);
 	if (fd < 0)
-		error_message(argv[1]);
+		fd_error(argv[1]);
 	return (fd);
 }
 
@@ -37,16 +37,18 @@ static int	ft_open_outfile(char **argv)
 		i++;
 	fd = open(argv[i - 1], O_TRUNC | O_CREAT | O_WRONLY, 0777);
 	if (fd < 0)
-		error_message(argv[i - 1]);
+		fd_error(argv[i - 1]);
 	return (fd);
 }
 
-int	ft_open_file(int i, char **argv, t_pipex *data)
+int	ft_open_fd(int i, char **argv, t_pipex *data)
 {
 	if (!i)
+	{
 		// if (data->hd_status)
-		// 	return();
+		// 	return(); // gnl
 		return (ft_open_infile(argv));
+	}
 	else if (!argv[i + 4 + data->hd_status])
 		return (ft_open_outfile(argv));
 	return (0);

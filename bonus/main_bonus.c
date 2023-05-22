@@ -6,13 +6,13 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 11:39:59 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/17 16:57:52 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/22 18:25:25 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-bool	ft_check_syntax(int argc, char **argv)
+bool	ft_check_args(int argc, char **argv)
 {
 	if (argc < 5)
 		return (false);
@@ -28,19 +28,18 @@ void	ft_exec(char *argv, t_pipex *data)
 
 	cmd = ft_split(argv, ' ');
 	if (!cmd)
-		;
+		error_free_exit(data, argv, "command not found");
 	if (ft_strchr(cmd[0], '/') != 0)
-	{
-		execve(cmd[0], cmd, data->split_path);
-	}
+		path = cmd[0];
 	else
-	{
 		path = find_cmd_path(cmd[0], data);
+	// printf("A ce stade, path = %s\n", path);
+	if (path && access(path, F_OK | X_OK) == 0)
 		execve(path, cmd, data->split_path);
-		ft_printf("%s: command not found\n", cmd[0]);
-		// free tout
-		exit(127);
-	}
+	ft_printf("%s: command not found\n", cmd[0]);
+	ft_free_split_path(data);
+	ft_free_pipes(data);
+	exit(127);
 	// printf("je n'execute pas la cmd\n");
 }
 
@@ -52,12 +51,9 @@ pid_t	ft_child(int i, char **argv, t_pipex *data)
 	pid = fork();
 	if (!pid)
 	{
-		fd = ft_open_file(i, argv, data);
+		fd = ft_open_fd(i, argv, data);
 		if (fd < 0)
-		{
-			printf("open marche pas trop\n");
 			exit(1);
-		}
 		ft_dup2(fd, i, argv, data);
 		// ft_printf("je passe par la  aevc : %s\n", argv[i + 2 + data->hd_status]);
 		ft_exec(argv[i + 2 + data->hd_status], data);
@@ -93,8 +89,8 @@ int	main(int argc, char **argv, char **env)
 	pid_t	last_pid;
 	int		i;
 
-	if (!ft_check_syntax(argc, argv))
-		return (ft_printf("syntax error\n"), 1);
+	if (!ft_check_args(argc, argv))
+		return (ft_putstr_fd("Invalid number of arguments\n", 2), 1);
 	init_struct(&data, argc, argv, env);
 	i = 0;
 	while (i < argc - 3 - data.hd_status)
