@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 14:03:20 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/22 16:08:53 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/23 17:40:36 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,31 +34,32 @@
 typedef struct s_pipex
 {
 	int			hd_status;
-	int			**pipe;
+	int			pipe[FOPEN_MAX][2];
 	char		*path;
 	char		**split_path;
 }	t_pipex;
 
 /* PIPEX_BONUS */
-pid_t	ft_pipe(t_pipex *data, char *argv, char **env, int i);
-// pid_t	do_bonus(int argc, char **argv, char **env);
-// pid_t	do_mandatory(int argc, char **argv, char **env);
-
-/* INIT_BONUS*/
-// void	infile_input(t_pipex *data, int argc, char **argv);
-// void	init_struct_bonus(t_pipex *data, int argc, char **env);
+void	ft_exec(char *argv, t_pipex *data);
+pid_t	ft_child(int i, char **argv, t_pipex *data);
 void	init_struct(t_pipex *data, int argc, char **argv, char **env);
+bool	ft_check_args(int argc, char **argv);
+
+/* OPEN BONUS */
+int		ft_open_infile(char **argv);
+// int		ft_open_hd(t_pipex *data);
+int		ft_open_outfile(char **argv);
+int		ft_open_fd(int i, char **argv, t_pipex *data);
 
 /* UTILS_BONUS */
-// int		ft_waitpid(pid_t last_pid);
+int		ft_return_status(pid_t last_pid);
 void	ft_dup2(int fd, int i, char **argv, t_pipex *data);
-void	ft_close_pipe(t_pipex *data, char **argv);
+void	ft_close_pipes(t_pipex *data, char **argv);
 
 /* PATH_BONUS */
 char	*ft_freejoin(char *s1, char *s2);
 char	*new_path(char *split_path, char *cmd);
 char	*find_cmd_path(char *cmd, t_pipex *data);
-char	*get_cmd_path(t_pipex *data, int i);
 char	*get_path(char **env);
 
 /* GNL_BONUS */
@@ -67,32 +68,10 @@ char	*get_line_store(char *str);
 char	*get_str(int fd, char *str);
 char	*get_next_line(int fd);
 
-/* FREE_BONUS */
-void	free_cmd(t_pipex *data);
-void	free_path(t_pipex *data);
+/* FREE BONUS */
 void	ft_free(t_pipex *data);
-void	exit_message(t_pipex *data, char *error, char	*str);
-void	ft_perror(t_pipex *data, char *str);
-
-
-/***********/
-
-/* OPEN */
-int			ft_open_fd(int i, char **argv, t_pipex *data);
-// static int	ft_open_infile(char **argv);
-// static int	ft_open_outfile(char **argv);
-
-bool	ft_check_args(int argc, char **argv);
-void	init_struct(t_pipex *data, int argc, char **argv, char **env);
-pid_t	ft_child(int i, char **argv, t_pipex *data);
-
-int    ft_return_status(pid_t last_pid);
-
-
-/* FREE */
-void	ft_free_pipes(t_pipex *data);
-void	ft_free_split_path(t_pipex *data);
-// void	ft_free_data(t_pipex *data);
+void	ft_write_error_message(t_pipex *data, int i, int argc, char *str);
 void	error_free_exit(t_pipex *data, char *argv, char *error_message);
-void	fd_error(char *str);
+void	fd_error_message(char *str);
+
 #endif

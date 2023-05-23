@@ -6,7 +6,7 @@
 #    By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/05 14:03:14 by jrouillo          #+#    #+#              #
-#    Updated: 2023/05/17 12:59:14 by jrouillo         ###   ########.fr        #
+#    Updated: 2023/05/23 15:42:40 by jrouillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ OBJ_BONUS_PATH = obj_bonus/
 SRC = pipex.c utils.c path.c free.c
 SRC2 = $(addprefix $(SRC_PATH), $(SRC))
 
-SRC_BONUS = open.c main_bonus.c init_bonus.c get_next_line_bonus.c \
+SRC_BONUS = pipex_bonus.c open_bonus.c get_next_line_bonus.c \
 				utils_bonus.c path_bonus.c free_bonus.c
 SCR2_BONUS =$(addprefix $(SRC_BONUS_PATH), $(SRC_BONUS))
 
@@ -85,7 +85,7 @@ _BOLD=\033[1m'
 all : $(OBJ_PATH) $(LIBFT) $(PRINTF) $(NAME)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(HDR)
-	@echo -n "$(_GREY)-${END}"
+	@echo -n "$(_GREY)-${_END}"
 	@$(CCF) -c $< -o $@ $(INC)
 
 $(OBJ_PATH):
@@ -97,9 +97,9 @@ $(LIBFT):
 	@echo "$(_GREEN)\n\n✅ Libft compiled\n${_END}"
 
 $(PRINTF):
-	@echo "$(_GREY)Compiling Ft_printf...${_END}"
+	@echo "$(_GREY)\nCompiling Ft_printf...${_END}"
 	@make -sC $(PRINTF_PATH)
-	@echo "$(_GREEN)\n\n✅ Ft_printf compiled\n${_END}"
+	@echo "$(_GREEN)\n✅ Ft_printf compiled\n${_END}"
 
 $(NAME): $(OBJ2)
 	@echo "$(_GREY)\nCompiling Pipex...${_END}"
@@ -114,7 +114,7 @@ bonus: $(OBJ_BONUS_PATH) $(LIBFT) $(PRINTF) $(OBJ2_BONUS)
 	@echo "$(_GREEN)\n🆗🕺 READY 🕺🆗\n${_END}"
 
 $(OBJ_BONUS_PATH)%.o: $(SRC_BONUS_PATH)%.c $(HDR_BONUS)
-	@echo -n "$(_GREY)-${END}"
+	@echo -n "$(_GREY)-${_END}"
 	@$(CCF) -c $< -o $@ $(INC)
 
 $(OBJ_BONUS_PATH):

@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:58:00 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/17 13:12:12 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/23 14:54:38 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,20 +56,6 @@ char	*find_cmd_path(char	*cmd, t_pipex *data)
 	}
 	return (NULL);
 }
-
-// char	*get_cmd_path(t_pipex *data, int i)
-// {
-// 	char	*cmd_path;
-
-// 	if (!data->split_cmd[i])
-// 		return (NULL);
-// 	cmd_path = NULL;
-// 	if (ft_strchr(data->split_cmd[i][0], '/') != 0)
-// 		return (data->split_cmd[i][0]);
-// 	else
-// 		cmd_path = find_cmd_path(data, i);
-// 	return (cmd_path);
-// }
 
 char	*get_path(char **env)
 {
