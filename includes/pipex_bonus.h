@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lechon <lechon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 14:03:20 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/25 17:50:48 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/26 00:14:55 by lechon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,12 @@ char	*ft_freejoin(char *s1, char *s2);
 char	*new_path(char *split_path, char *cmd);
 char	*find_cmd_path(char *cmd, t_pipex *data);
 char	*ft_split_argv(char *argv);
-void	ft_no_path(t_pipex *data, int argc, char **argv);
 char	*get_path(char **env);
+
+/* NO PATH BONUS */
+char	*ft_split_argv(char *argv);
+int     determine_i(t_pipex *data);
+void	ft_no_path(t_pipex *data, int argc, char **argv);
 
 /* GNL_BONUS */
 char	*get_line(char *str, char *tmp);

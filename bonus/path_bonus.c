@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lechon <lechon@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:58:00 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/25 17:35:01 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/26 00:12:44 by lechon           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,28 +55,6 @@ char	*find_cmd_path(char	*cmd, t_pipex *data)
 		free(cmd_path);
 	}
 	return (NULL);
-}
-
-void	ft_no_path(t_pipex *data, int argc, char **argv)
-{
-	int		i;
-	char	*res;
-
-	if (data->hd_status)
-		i = 3;
-	else
-		i = 2;
-	while (i < argc - 1)
-	{
-		if (access(argv[i], F_OK | X_OK) != 0)
-		{
-			res = ft_strjoin(argv[i], ": command not found\n");
-			ft_putstr_fd(res, 2);
-			free(res);
-		}
-		i++;
-	}
-	exit (1);
 }
 
 char	*get_path(char **env)
