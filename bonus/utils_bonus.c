@@ -6,11 +6,15 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 13:42:56 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/23 18:01:14 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/25 14:06:26 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
+
+/* Function that :
+	1/ waits for all child processes to finish before doing parent process
+	2/ returns the correct errno in the standard output */
 
 int    ft_return_status(pid_t last_pid)
 {
@@ -76,8 +80,8 @@ void	ft_close_pipes(t_pipex *data, char **argv)
 	while (++i < size - 4 - data->hd_status)
 	{
 		if (close(data->pipe[i][0]) < 0)
-			error_free_exit(data, 0, "Error closing read pipe");
+			error_free_exit(data, "Error closing read pipe");
 		if (close(data->pipe[i][1]) < 0)
-			error_free_exit(data, 0, "Error closing write pipe");
+			error_free_exit(data, "Error closing write pipe");
 	}
 }

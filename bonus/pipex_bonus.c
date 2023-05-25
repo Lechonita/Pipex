@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 11:39:59 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/23 17:52:14 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/25 14:08:01 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,11 @@ void	ft_exec(char *argv, t_pipex *data)
 
 	cmd = ft_split(argv, ' ');
 	if (!cmd)
-		error_free_exit(data, argv, "command not found");
+	{
+		ft_putstr_fd(argv, 2);
+		ft_putstr_fd(": ", 2);
+		error_free_exit(data, "command not found");
+	}
 	if (ft_strchr(cmd[0], '/') != 0)
 		path = cmd[0];
 	else
@@ -39,7 +43,7 @@ pid_t	ft_child(int i, char **argv, t_pipex *data)
 
 	pid = fork();
 	if (pid < 0)
-		error_free_exit(data, 0, "Allocation failed: fork\n");
+		error_free_exit(data, "Allocation failed: fork");
 	if (!pid)
 	{
 		fd = ft_open_fd(i, argv, data);
@@ -62,7 +66,7 @@ void	init_struct(t_pipex *data, int argc, char **argv, char **env)
 	{
 		data->split_path = ft_split(data->path, ':');
 		if (!data->split_path)
-			error_free_exit(data, 0, "Allocation failed: split path\n");
+			error_free_exit(data, "Allocation failed: split path");
 	}
 	i = 0;
 	while (i < argc - 4 - data->hd_status)

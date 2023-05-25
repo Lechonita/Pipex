@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 14:03:20 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/23 17:40:36 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/25 13:58:36 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*get_next_line(int fd);
 /* FREE BONUS */
 void	ft_free(t_pipex *data);
 void	ft_write_error_message(t_pipex *data, int i, int argc, char *str);
-void	error_free_exit(t_pipex *data, char *argv, char *error_message);
+void	error_free_exit(t_pipex *data, char *error_message);
 void	fd_error_message(char *str);
 
 #endif
