@@ -1,5 +1,4 @@
 # Pipex2
 To do :
-- finir here_doc
-- rajouter toutes les protections
-- free
+- corrger la fonction error_free_exit
+- add here_doc
