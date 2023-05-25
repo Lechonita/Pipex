@@ -1,4 +1,4 @@
 # Pipex2
 To do :
-- corrger la fonction error_free_exit
-- add here_doc
+- finir de gere le unset path / en -i => faire en sorte de s'arreter a l'espace de l'argv
+- tester les leaks
