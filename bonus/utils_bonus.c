@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 13:42:56 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/25 14:06:26 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/25 17:22:06 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_dup2(int fd, int i, char **argv, t_pipex *data)
 			return (ft_free(data), exit(EXIT_FAILURE));
 	}
 	else if (argv[i + 4 + data->hd_status])
-	{	
+	{
 		dup2(data->pipe[i - 1][0], STDIN_FILENO);
 		dup2(data->pipe[i][1], STDOUT_FILENO);
 		ft_close_pipes(data, argv);
@@ -64,8 +64,9 @@ void	ft_dup2(int fd, int i, char **argv, t_pipex *data)
 	}
 }
 
-/* Closing all piped one by one.
-	Finding size will allow to know how many pipes had been open,
+/* Closing all pipes one by one.
+	Finding "size" will allow to know how many pipes had been open
+	based on the number of arguments,
 	therefore we'll know how many pipes to close. */
 
 void	ft_close_pipes(t_pipex *data, char **argv)

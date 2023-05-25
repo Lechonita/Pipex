@@ -6,89 +6,92 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 14:02:50 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/03 14:52:16 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/25 17:32:23 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-pid_t	ft_pipe(t_pipex *data, char *argv, char **env, int i)
+void	ft_exec(char *argv, t_pipex *data)
+{
+	char	*path;
+	char	**cmd;
+
+	cmd = ft_split(argv, ' ');
+	if (!cmd)
+	{
+		ft_putstr_fd(argv, 2);
+		ft_putstr_fd(": ", 2);
+		error_free_exit(data, "command not found");
+	}
+	if (ft_strchr(cmd[0], '/') != 0)
+		path = cmd[0];
+	else
+		path = find_cmd_path(cmd[0], data);
+	if (path && access(path, F_OK | X_OK) == 0)
+		execve(path, cmd, data->split_path);
+	ft_putstr_fd(cmd[0], 2);
+	ft_putstr_fd(": command not found\n", 2);
+	ft_free(data);
+	return (free(cmd), exit(127));
+}
+
+pid_t	ft_child(int i, char **argv, t_pipex *data)
 {
 	pid_t	pid;
+	int		fd;
 
 	pid = fork();
 	if (pid < 0)
-		ft_perror(data, FORK);
-	else if (pid == 0)
+		error_free_exit(data, "Allocation failed: fork");
+	if (!pid)
 	{
-		data->split_cmd[i] = ft_split(argv, ' ');
-		data->cmd_path[i] = get_cmd_path(data, i);
-		if (!data->cmd_path[i] || access(data->cmd_path[i], F_OK | X_OK) != 0)
-			ft_perror(data, data->split_cmd[i][0]);
-		if (i == 0)
-			ft_dup2(data->infile, data->pipe[1], data);
-		else if (i == (data->nb_cmd - 1))
-			ft_dup2(data->pipe[(i - 1) * 2], data->outfile, data);
-		else
-			ft_dup2(data->pipe[(i - 1) * 2], data->pipe[i * 2 + 1], data);
-		ft_close(data);
-		if (execve(data->cmd_path[i], data->split_cmd[i], env) < 0)
-			ft_perror(data, data->split_cmd[i][0]);
+		fd = ft_open_fd(i, argv);
+		ft_dup2(fd, i, argv, data);
+		ft_exec(argv[i + 2], data);
 	}
 	return (pid);
 }
 
-void	init_struct(t_pipex *data, int argc, char **argv, char **env)
+void	init_struct(t_pipex *data, int argc, char **env)
 {
-	data->infile = open(argv[1], O_RDONLY);
-	if (data->infile < 0)
-		ft_printf("%s: %s\n", strerror(errno), argv[1]);
-	data->outfile = open(argv[argc - 1], O_TRUNC | O_CREAT | O_RDWR, 0777);
-	if (data->outfile < 0)
-		ft_printf("%s: %s\n", strerror(errno), argv[argc - 1]);
-	// 	ft_perror(data, argv[argc - 1]);
-	// if (data->infile < 0)
-	// {
-	// 	ft_free(data);
-	// 	exit (1);
-	// }
-	data->nb_cmd = argc - 3;
+	int	i;
+
 	data->path = get_path(env);
 	if (!data->path)
-		exit_message(data, "data not found", ERROR_PATH);
-	data->split_path = ft_split(data->path, ':');
-	if (!data->split_path)
-		exit_message(data, "data not found", ERROR_PATH);
-	data->split_cmd = ft_calloc((data->nb_cmd), sizeof(char **));
-	data->cmd_path = ft_calloc((data->nb_cmd), sizeof(char *));
-	return ;
+		ft_no_path(data, argc, argv);
+	else
+	{
+		data->split_path = ft_split(data->path, ':');
+		if (!data->split_path)
+			error_free_exit(data, "Allocation failed: split path");
+	}
+	i = 0;
+	while (i < argc - 4)
+	{
+		pipe(data->pipe[i]);
+		i++;
+	}
 }
 
 int	main(int argc, char **argv, char **env)
 {
-	t_pipex	*data;
-	int		n;
-	int		i;
+	t_pipex	data;
 	pid_t	last_pid;
+	int		i;
 
 	last_pid = 0;
 	if (argc == 5)
 	{
-		data = ft_calloc(1, sizeof(t_pipex));
-		init_struct(data, argc, argv, env);
-		ft_open(data);
-		n = 1;
+		init_struct(&data, argc, env);
 		i = 0;
-		while (++n < (argc - 1))
+		while (i < argc - 3)
 		{
-			last_pid = ft_pipe(data, argv[n], env, i);
+			last_pid = ft_child(i, argv, &data);
 			i++;
 		}
-		ft_free(data);
-		while (waitpid(-1, NULL, 0) != -1)
-			;
+		ft_close_pipes(&data, argv);
+		ft_free(&data);
 	}
-	else
-		ft_putstr_fd(ERROR_ARGS, 2);
-	return (ft_waitpid(last_pid));
+	return (ft_return_status(last_pid));
 }

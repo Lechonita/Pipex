@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:58:00 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/04/27 12:07:13 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/25 17:50:34 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*new_path(char *split_path, char *cmd)
 	return (cmd_path);
 }
 
-char	*find_cmd_path(t_pipex *data, int i)
+char	*find_cmd_path(char	*cmd, t_pipex *data)
 {
 	char	*cmd_path;
 	int		n;
@@ -47,7 +47,7 @@ char	*find_cmd_path(t_pipex *data, int i)
 	n = -1;
 	while (data->split_path[++n])
 	{
-		cmd_path = new_path(data->split_path[n], data->split_cmd[i][0]);
+		cmd_path = new_path(data->split_path[n], cmd);
 		if (!cmd_path)
 			return (NULL);
 		if (access(cmd_path, F_OK | X_OK) == 0)
@@ -57,22 +57,42 @@ char	*find_cmd_path(t_pipex *data, int i)
 	return (NULL);
 }
 
-char	*get_cmd_path(t_pipex *data, int i)
+char	*ft_split_argv(char *argv)
 {
-	char	*cmd_path;
+	int		i;
+	char	*res;
 
-	if (!data->split_cmd[i])
-		return (NULL);
-	cmd_path = NULL;
-	if (ft_strchr(data->split_cmd[i][0], '/') != 0)
-		return (data->split_cmd[i][0]);
-	else
-		cmd_path = find_cmd_path(data, i);
-	return (cmd_path);
+	i = -1;
+	while (argv[++i] != ' ')
+		res[i] = argv[i];
+	return (res);
+}
+
+void	ft_no_path(t_pipex *data, int argc, char **argv)
+{
+	int		i;
+	char	*res;
+
+	i = 2;
+	while (i < argc - 1)
+	{
+		if (access(argv[i], F_OK | X_OK) != 0)
+		{
+			if (ft_strchr(argv[i], ' ') != 0)
+				argv[i] = ft_split_argv(argv[i]);
+			res = ft_strjoin(argv[i], ": command not found\n");
+			ft_putstr_fd(res, 2);
+			free(res);
+		}
+		i++;
+	}
+	exit (1);
 }
 
 char	*get_path(char **env)
 {
+	if (!env || !*env || **env)
+		return (NULL);
 	while (ft_strncmp("PATH=", *env, 5))
 		env++;
 	return (*env + 5);

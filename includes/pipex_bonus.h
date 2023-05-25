@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 14:03:20 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/25 13:58:36 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/25 17:50:48 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,6 @@
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <stdbool.h>
-
-# define ERROR_ARGS "Invalid number of arguments\n"
-# define PIPE "pipe"
-# define FORK "fork"
-# define PATH "path"
 
 # define BUFFER_SIZE BUFSIZ
 
@@ -47,8 +42,8 @@ bool	ft_check_args(int argc, char **argv);
 
 /* OPEN BONUS */
 int		ft_open_infile(char **argv);
-// int		ft_open_hd(t_pipex *data);
-int		ft_open_outfile(char **argv);
+int		ft_open_hd(char **argv);
+int		ft_open_outfile(t_pipex *data, char **argv);
 int		ft_open_fd(int i, char **argv, t_pipex *data);
 
 /* UTILS_BONUS */
@@ -60,6 +55,8 @@ void	ft_close_pipes(t_pipex *data, char **argv);
 char	*ft_freejoin(char *s1, char *s2);
 char	*new_path(char *split_path, char *cmd);
 char	*find_cmd_path(char *cmd, t_pipex *data);
+char	*ft_split_argv(char *argv);
+void	ft_no_path(t_pipex *data, int argc, char **argv);
 char	*get_path(char **env);
 
 /* GNL_BONUS */
@@ -70,7 +67,6 @@ char	*get_next_line(int fd);
 
 /* FREE BONUS */
 void	ft_free(t_pipex *data);
-void	ft_write_error_message(t_pipex *data, int i, int argc, char *str);
 void	error_free_exit(t_pipex *data, char *error_message);
 void	fd_error_message(char *str);
 

@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 11:39:59 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/25 14:08:01 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/25 17:22:55 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_exec(char *argv, t_pipex *data)
 		ft_putstr_fd(": ", 2);
 		error_free_exit(data, "command not found");
 	}
-	if (ft_strchr(cmd[0], '/') != 0)
+	if (ft_strchr(cmd[0], '/') != 0 && access(cmd[0], F_OK | X_OK) == 0)
 		path = cmd[0];
 	else
 		path = find_cmd_path(cmd[0], data);
@@ -62,7 +62,9 @@ void	init_struct(t_pipex *data, int argc, char **argv, char **env)
 	else
 		data->hd_status = 0;
 	data->path = get_path(env);
-	if (data->path)
+	if (!data->path)
+		ft_no_path(data, argc, argv);
+	else
 	{
 		data->split_path = ft_split(data->path, ':');
 		if (!data->split_path)
@@ -102,5 +104,12 @@ int	main(int argc, char **argv, char **env)
 	}
 	ft_close_pipes(&data, argv);
 	ft_free(&data);
+	while (waitpid(-1, NULL, 0) != -1)
+		;
+	if (access("here_doc", F_OK) != -1)
+	{
+		if (unlink("here_doc") < 0)
+			error_free_exit(&data, "Unlink error: here_doc");
+	}
 	return (ft_return_status(last_pid));
 }

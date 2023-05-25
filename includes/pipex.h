@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 14:03:20 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/02 14:56:53 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/25 17:32:01 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,50 +23,38 @@
 # include <sys/wait.h>
 # include <fcntl.h>
 
-# define ERROR_ARGS "input: Invalid number of arguments\n"
-# define PIPE "pipe"
-# define FORK "fork"
-# define ERROR_PATH "path"
-# define ERROR_FD_IN "dup fd_in"
-# define ERROR_FD_OUT "dup fd_out"
-
-# define BUFFER_SIZE BUFSIZ
-
 typedef struct s_pipex
 {
-	int			infile;
-	int			outfile;
-	int			pipe[2];
-	int			nb_cmd;
+	int			pipe[FOPEN_MAX][2];
 	char		*path;
 	char		**split_path;
-	char		***split_cmd;
-	char		**cmd_path;
 }	t_pipex;
 
 /* PIPEX */
+void	ft_exec(char *argv, t_pipex *data);
+pid_t	ft_child(int i, char **argv, t_pipex *data);
+void	init_struct(t_pipex *data, int argc, char **env);
 
-pid_t	ft_pipe(t_pipex *data, char *argv, char **env, int i);
-void	init_struct(t_pipex *data, int argc, char **argv, char **env);
+/* OPEN */
+int		ft_open_infile(char **argv);
+int		ft_open_outfile(char **argv);
+int		ft_open_fd(int i, char **argv);
 
 /* UTILS */
-int		ft_waitpid(pid_t last_pid);
-void	ft_dup2(int new_read, int new_write, t_pipex *data);
-void	ft_close(t_pipex *data);
-void	ft_open(t_pipex *data);
+int		ft_return_status(pid_t last_pid);
+void	ft_dup2(int fd, int i, char **argv, t_pipex *data);
+void	ft_close_pipes(t_pipex *data, char **argv);
 
 /* PATH */
 char	*ft_freejoin(char *s1, char *s2);
 char	*new_path(char *split_path, char *cmd);
-char	*find_cmd_path(t_pipex *data, int i);
-char	*get_cmd_path(t_pipex *data, int i);
+char	*find_cmd_path(char *cmd, t_pipex *data);
+void	ft_no_path(t_pipex *data, int argc, char **argv);
 char	*get_path(char **env);
 
 /* FREE */
-void	free_cmd(t_pipex *data);
-void	free_path(t_pipex *data);
 void	ft_free(t_pipex *data);
-void	exit_message(t_pipex *data, char *error, char	*str);
-void	ft_perror(t_pipex *data, char	*str);
+void	error_free_exit(t_pipex *data, char *error_message);
+void	fd_error_message(char *str);
 
 #endif
