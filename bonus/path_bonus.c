@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lechon <lechon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 16:58:00 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/26 00:12:44 by lechon           ###   ########.fr       */
+/*   Updated: 2023/05/26 15:30:08 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*find_cmd_path(char	*cmd, t_pipex *data)
 
 char	*get_path(char **env)
 {
-	if (!env || !*env || **env)
+	if (!env || !*env)
 		return (NULL);
 	while (ft_strncmp("PATH=", *env, 5))
 		env++;

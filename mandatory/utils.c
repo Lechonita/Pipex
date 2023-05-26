@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 13:42:56 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/25 15:46:13 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/26 17:41:57 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,37 @@
 	1/ waits for all child processes to finish before doing parent process
 	2/ returns the correct errno in the standard output */
 
-int    ft_return_status(pid_t last_pid)
+int	ft_return_status(pid_t last_pid)
 {
-    pid_t	wpid;
-    int		wstatus;
-    int		return_value;
+	pid_t	wpid;
+	int		wstatus;
+	int		return_value;
 
-    while (1)
-    {
-        wpid = wait(&wstatus);
-        if (wpid < 0)
-            break ;
-        if (wpid == last_pid)
-        {
-            if (WIFEXITED(wstatus))
-                return_value = WEXITSTATUS(wstatus);
-            else
-                return_value = 128 + WTERMSIG(wstatus);
-        }
-    }
-    return (return_value);
+	while (1)
+	{
+		wpid = wait(&wstatus);
+		if (wpid < 0)
+			break ;
+		if (wpid == last_pid)
+		{
+			if (WIFEXITED(wstatus))
+				return_value = WEXITSTATUS(wstatus);
+			else
+				return_value = 128 + WTERMSIG(wstatus);
+		}
+	}
+	return (return_value);
 }
+
+/* Function that uses dup2() to change the new write fd (1) and the
+	new read fd (0).
+	New write fd and New read fd depend on the order of the command.
+	If it's the first command (i = 0), the original input is infile,
+	the new read fd is data->pipe[0][1].
+	If it's neither the first nor the last command, the read fd is
+	data->pipe[i - 1][0] and the write fd is data->pipe[i][1].
+	If it's the last command, the read fd is data->pipe[i - 1][0]
+	and the write fd is the outfile. */
 
 void	ft_dup2(int fd, int i, char **argv, t_pipex *data)
 {

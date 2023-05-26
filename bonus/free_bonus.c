@@ -6,13 +6,28 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 14:37:53 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/25 15:22:43 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/26 17:48:40 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-/* Free data->split_path & free data->cmd ( both char **) */
+/* Free cmd (char **) */
+
+void	ft_free_cmd(char **cmd)
+{
+	int	i;
+
+	if (cmd)
+	{
+		i = -1;
+		while (cmd[++i])
+			free(cmd[i]);
+		free(cmd);
+	}
+}
+
+/* Free data->split_path & free data->cmd (both char **) */
 
 void	ft_free(t_pipex *data)
 {

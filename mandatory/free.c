@@ -6,11 +6,24 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 14:49:52 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/25 15:47:42 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/26 17:21:05 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	ft_free_cmd(char **cmd)
+{
+	int	i;
+
+	if (cmd)
+	{
+		i = -1;
+		while (cmd[++i])
+			free(cmd[i]);
+		free(cmd);
+	}
+}
 
 /* Free data->split_path & free data->cmd ( both char **) */
 

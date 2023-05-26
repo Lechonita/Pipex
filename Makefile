@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lechon <lechon@student.42.fr>              +#+  +:+       +#+         #
+#    By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/05 14:03:14 by jrouillo          #+#    #+#              #
-#    Updated: 2023/05/26 00:19:48 by lechon           ###   ########.fr        #
+#    Updated: 2023/05/26 17:24:40 by jrouillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,11 +24,11 @@ OBJ_BONUS_PATH = obj_bonus/
 
 ############################## SOURCES ##############################
 
-SRC = pipex.c open.c utils.c path.c free.c
+SRC = pipex.c open.c utils.c path.c no_path.c free.c
 SRC2 = $(addprefix $(SRC_PATH), $(SRC))
 
 SRC_BONUS = pipex_bonus.c open_bonus.c get_next_line_bonus.c \
-				utils_bonus.c path_bonus.c no_path.c free_bonus.c
+				utils_bonus.c path_bonus.c no_path_bonus.c free_bonus.c
 SCR2_BONUS =$(addprefix $(SRC_BONUS_PATH), $(SRC_BONUS))
 
 ############################## OBJECTS ##############################

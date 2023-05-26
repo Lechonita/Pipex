@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 14:02:50 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/25 17:32:23 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/26 17:47:18 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ void	ft_exec(char *argv, t_pipex *data)
 		execve(path, cmd, data->split_path);
 	ft_putstr_fd(cmd[0], 2);
 	ft_putstr_fd(": command not found\n", 2);
-	ft_free(data);
-	return (free(cmd), exit(127));
+	return (ft_free(data), ft_free_cmd(cmd), exit(127));
 }
 
 pid_t	ft_child(int i, char **argv, t_pipex *data)
@@ -53,25 +52,22 @@ pid_t	ft_child(int i, char **argv, t_pipex *data)
 	return (pid);
 }
 
-void	init_struct(t_pipex *data, int argc, char **env)
+void	init_struct(t_pipex *data, int argc, char **argv, char **env)
 {
 	int	i;
 
 	data->path = get_path(env);
 	if (!data->path)
-		ft_no_path(data, argc, argv);
+		ft_no_path(argc, argv);
 	else
 	{
 		data->split_path = ft_split(data->path, ':');
 		if (!data->split_path)
 			error_free_exit(data, "Allocation failed: split path");
 	}
-	i = 0;
-	while (i < argc - 4)
-	{
+	i = -1;
+	while (++i < argc - 4)
 		pipe(data->pipe[i]);
-		i++;
-	}
 }
 
 int	main(int argc, char **argv, char **env)
@@ -83,7 +79,7 @@ int	main(int argc, char **argv, char **env)
 	last_pid = 0;
 	if (argc == 5)
 	{
-		init_struct(&data, argc, env);
+		init_struct(&data, argc, argv, env);
 		i = 0;
 		while (i < argc - 3)
 		{

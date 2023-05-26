@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 11:39:59 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/25 17:22:55 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/26 17:22:51 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ void	ft_exec(char *argv, t_pipex *data)
 		execve(path, cmd, data->split_path);
 	ft_putstr_fd(cmd[0], 2);
 	ft_putstr_fd(": command not found\n", 2);
-	ft_free(data);
-	return (free(cmd), exit(127));
+	return (ft_free(data), ft_free_cmd(cmd), exit(127));
 }
 
 pid_t	ft_child(int i, char **argv, t_pipex *data)
@@ -70,12 +69,9 @@ void	init_struct(t_pipex *data, int argc, char **argv, char **env)
 		if (!data->split_path)
 			error_free_exit(data, "Allocation failed: split path");
 	}
-	i = 0;
-	while (i < argc - 4 - data->hd_status)
-	{
+	i = -1;
+	while (++i < argc - 4 - data->hd_status)
 		pipe(data->pipe[i]);
-		i++;
-	}
 }
 
 bool	ft_check_args(int argc, char **argv)
@@ -104,12 +100,5 @@ int	main(int argc, char **argv, char **env)
 	}
 	ft_close_pipes(&data, argv);
 	ft_free(&data);
-	while (waitpid(-1, NULL, 0) != -1)
-		;
-	if (access("here_doc", F_OK) != -1)
-	{
-		if (unlink("here_doc") < 0)
-			error_free_exit(&data, "Unlink error: here_doc");
-	}
-	return (ft_return_status(last_pid));
+	return (ft_return_status(&data, last_pid));
 }

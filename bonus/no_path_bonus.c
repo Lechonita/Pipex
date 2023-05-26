@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   no_path.c                                          :+:      :+:    :+:   */
+/*   no_path_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lechon <lechon@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/26 00:12:21 by lechon            #+#    #+#             */
-/*   Updated: 2023/05/26 00:16:29 by lechon           ###   ########.fr       */
+/*   Updated: 2023/05/26 17:41:24 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,38 +15,38 @@
 char	*ft_split_argv(char *argv)
 {
 	int		i;
-    int     j;
+	int		j;
 	char	*res;
-    int     size;
+	int		size;
 
 	i = 0;
-    j = 0;
-    while (argv[i] && (argv[i] == 32 || argv[i] == 9))
-        i++;
-    size = i;
-    while (argv[size] && argv[size] != ' ')
-        size++;
-    res = malloc(sizeof(char) * (size - i + 1));
-    if (!res)
+	j = 0;
+	while (argv[i] && (argv[i] == 32 || argv[i] == 9))
+		i++;
+	size = i;
+	while (argv[size] && argv[size] != ' ')
+		size++;
+	res = malloc(sizeof(char) * (size - i + 1));
+	if (!res)
 		return (NULL);
 	while (argv[i] && i < size)
-    {
+	{
 		res[j++] = argv[i];
-        i++;
-    }
-    res[j] = '\0';
-    return(res);
+		i++;
+	}
+	res[j] = '\0';
+	return (res);
 }
 
-int     determine_i(t_pipex *data)
+int	determine_i(t_pipex *data)
 {
-    int     i;
+	int	i;
 
-    if (data->hd_status)
+	if (data->hd_status)
 		i = 3;
 	else
 		i = 2;
-    return (i);
+	return (i);
 }
 
 void	ft_no_path(t_pipex *data, int argc, char **argv)
@@ -76,5 +76,4 @@ void	ft_no_path(t_pipex *data, int argc, char **argv)
 			}
 		}
 	}
-	exit (1);
 }
