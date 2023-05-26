@@ -15,7 +15,6 @@ The output will appear in the Outfile (if does not exist, will be created).
 # Bonus
 
 - Handle multiple pipes
-- 
 - Support << and >> when the first parameter is "here_doc"
 
 
@@ -47,6 +46,7 @@ This command should behave the same as :
 
 ```< infile cmd1 | cmd2 | cmd3 ... | cmdn > outfile```
 
+ -----------------------------------------------------------------------------------------------------------------------
 
 
 To test here_doc, use (for example) :
