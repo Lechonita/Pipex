@@ -6,7 +6,7 @@
 #    By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/05 14:03:14 by jrouillo          #+#    #+#              #
-#    Updated: 2023/05/26 17:24:40 by jrouillo         ###   ########.fr        #
+#    Updated: 2023/05/29 13:51:35 by jrouillo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,6 @@ FLAGS = -Wall -Werror -Wextra -g
 
 INC = -I ./includes/ \
 		-I ./libft/ \
-		-I ./ft_printf/ \
 
 HDR = includes/pipex.h
 HDR_BONUS = includes/pipex_bonus.h
@@ -61,12 +60,6 @@ HDR_BONUS = includes/pipex_bonus.h
 
 LIBFT_PATH = libft
 LIBFT = $(LIBFT_PATH)/libft.a
-
-
-############################### PRINTF ###############################
-
-PRINTF_PATH = ft_printf
-PRINTF = $(PRINTF_PATH)/libftprintf.a
 
 
 ###################### FONT COLORS AND EFFECTS ######################
@@ -82,7 +75,7 @@ _BOLD=\033[1m'
 
 ############################### RULES ###############################
 
-all : $(OBJ_PATH) $(LIBFT) $(PRINTF) $(NAME)
+all : $(OBJ_PATH) $(LIBFT) $(NAME)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c $(HDR)
 	@echo -n "$(_GREY)-${_END}"
@@ -96,20 +89,15 @@ $(LIBFT):
 	@make -sC $(LIBFT_PATH)
 	@echo "$(_GREEN)\n\n✅ Libft compiled\n${_END}"
 
-$(PRINTF):
-	@echo "$(_GREY)\nCompiling Ft_printf...${_END}"
-	@make -sC $(PRINTF_PATH)
-	@echo "$(_GREEN)\n✅ Ft_printf compiled\n${_END}"
-
 $(NAME): $(OBJ2)
 	@echo "$(_GREY)\nCompiling Pipex...${_END}"
-	@$(CCF) $(OBJ2) $(LIBFT) $(PRINTF) $(INC) -o $(NAME)
+	@$(CCF) $(OBJ2) $(LIBFT) $(INC) -o $(NAME)
 	@echo "$(_GREEN)\n✅ Pipex compiled\n${_END}"
 	@echo "$(_GREEN)\n🆗🕺 READY 🕺🆗\n${_END}"
 
-bonus: $(OBJ_BONUS_PATH) $(LIBFT) $(PRINTF) $(OBJ2_BONUS)
+bonus: $(OBJ_BONUS_PATH) $(LIBFT) $(OBJ2_BONUS)
 	@echo "$(_GREY)\nCompiling Pipex Bonus...${_END}"
-	@$(CCF) $(OBJ2_BONUS) $(LIBFT) $(PRINTF) $(INC) -o $(NAME)
+	@$(CCF) $(OBJ2_BONUS) $(LIBFT) $(INC) -o $(NAME)
 	@echo "$(_GREEN)\n✅ Pipex Bonus compiled\n${_END}"
 	@echo "$(_GREEN)\n🆗🕺 READY 🕺🆗\n${_END}"
 
@@ -123,8 +111,6 @@ $(OBJ_BONUS_PATH):
 clean:
 	@make clean -sC $(LIBFT_PATH)
 	@echo "$(_CYAN)\n🌀 Libft cleaned\n${_END}"
-	@make clean -sC $(PRINTF_PATH)
-	@echo "$(_CYAN)\n🌀 Ft_printf cleaned\n${_END}"
 	@rm -rf $(OBJ_PATH)
 	@rm -rf $(OBJ_BONUS_PATH)
 	@echo "$(_CYAN)\n🌀 Pipex cleaned\n${_END}"
@@ -132,7 +118,6 @@ clean:
 
 fclean: clean
 	@make fclean -sC $(LIBFT_PATH)
-	@make fclean -sC $(PRINTF_PATH)
 	@rm -f $(NAME)
 	@rm -f $(NAME_BONUS)
 

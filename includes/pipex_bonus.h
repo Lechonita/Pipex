@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 14:03:20 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/26 17:46:48 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/29 13:51:43 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 # define PIPEX_BONUS_H
 
 # include "libft.h"
-# include "ft_printf.h"
 
 # include <unistd.h>
 # include <stdio.h>

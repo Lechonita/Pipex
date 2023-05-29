@@ -6,7 +6,7 @@
 /*   By: jrouillo <jrouillo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/05 14:02:50 by jrouillo          #+#    #+#             */
-/*   Updated: 2023/05/26 17:47:18 by jrouillo         ###   ########.fr       */
+/*   Updated: 2023/05/29 13:36:23 by jrouillo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,5 +89,7 @@ int	main(int argc, char **argv, char **env)
 		ft_close_pipes(&data, argv);
 		ft_free(&data);
 	}
+	else
+		return (ft_putstr_fd("Invalid number of arguments\n", 2), 0);
 	return (ft_return_status(last_pid));
 }
