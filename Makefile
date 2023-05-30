@@ -43,8 +43,7 @@ OBJ2_BONUS = $(addprefix $(OBJ_BONUS_PATH), $(OBJ_BONUS))
 ############################### FLAGS ###############################
 
 CCF  = cc $(FLAGS)
-FLAGS = -Wall -Werror -Wextra -g
-#-fsanitize=address -g2
+FLAGS = -Wall -Werror -Wextra
 
 
 ############################## INCLUDE ##############################
