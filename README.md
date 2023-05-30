@@ -62,3 +62,9 @@ This command should behave the same as :
 LIMITER is the word that will be used to exit here_doc.
 
 It can be anything you write in the command line (LIM, STOP...).
+
+
+
+# Status
+Bonus included.
+Validated 125%
